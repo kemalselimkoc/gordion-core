@@ -46,7 +46,7 @@ npm test
 
 Testler SDK'nın HTTP katmanını taklit eder; gerçek anahtar veya ücretli çağrı gerekmez. Bağlam, limitler, iptal, hata sonrası durum ve 429/retry davranışı test edilir. Gerçek API uçtan uca testi bekliyor.
 
-Yerel derleme ve 10 test geçti. GitHub Actions henüz etkin değil: mevcut GitHub OAuth oturumunun `workflow` yetkisi yok. [CI taslağı](docs/ci-example.yml) yetki tamamlandığında `.github/workflows/check.yml` konumuna taşınabilir. Action referansları commit SHA ile sabitlenmiştir.
+Yerel derleme ve 10 test geçti. [GitHub Actions](.github/workflows/check.yml), push ve pull request sırasında Windows üzerinde bağımlılık kurulumu, tip kontrolü ve testleri çalıştırır. Action referansları commit SHA ile sabitlenmiştir; workflow yalnızca repository okuma yetkisine sahiptir. Gerçek API anahtarı kullanılmaz.
 
 ## Kaynak ve lisans
 
