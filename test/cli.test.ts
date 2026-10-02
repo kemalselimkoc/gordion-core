@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
+import { stripVTControlCharacters } from 'node:util';
 
-test('demo CLI iki tur, reset ve çıkış akışını ağsız tamamlar', async () => {
+for (const forceColor of ['0', '1']) {
+test(`demo CLI iki tur, reset ve çıkış akışını ağsız tamamlar (FORCE_COLOR=${forceColor})`, async () => {
   const child = spawn(process.execPath, ['dist/src/cli.js', '--demo'], {
     stdio: 'pipe', windowsHide: true,
-    env: { ...process.env, GORDION_MAX_REQUESTS: '10' },
+    env: { ...process.env, GORDION_MAX_REQUESTS: '10', FORCE_COLOR: forceColor },
   });
   let output = '';
   let phase = 0;
@@ -23,6 +25,9 @@ test('demo CLI iki tur, reset ve çıkış akışını ağsız tamamlar', async 
   }).finally(() => clearTimeout(timer));
   assert.equal(code, 0, stderr + output);
   assert.equal(phase, 3, output);
-  assert.match(output, /Sohbet silindi/);
-  assert.match(output, /requests: 2/);
+  // Terminal renklendirmesi davranışı değiştirmez; metni tüm çıktı toplandıktan sonra temizle.
+  const plainOutput = stripVTControlCharacters(output);
+  assert.match(plainOutput, /Sohbet silindi/);
+  assert.match(plainOutput, /requests: 2/);
 });
+}
